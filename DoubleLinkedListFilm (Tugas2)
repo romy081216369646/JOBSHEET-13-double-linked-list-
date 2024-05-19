@@ -1,0 +1,157 @@
+public class DoubleLinkedListFilm {
+    Film head, tail;
+    int size;
+
+    public DoubleLinkedListFilm() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void addFirst(int id, String judul, double rating) {
+        Film newNode = new Film(null, id, judul, rating, head);
+        if (isEmpty()) {
+            head = tail = newNode;
+        } else {
+            head.prev = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+
+    public void addLast(int id, String judul, double rating) {
+        Film newNode = new Film(tail, id, judul, rating, null);
+        if (isEmpty()) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void add(int id, String judul, double rating, int index) throws Exception {
+        if (index < 0 || index > size) {
+            throw new Exception("Nilai indeks di luar batas");
+        }
+        if (index == 0) {
+            addFirst(id, judul, rating);
+        } else if (index == size) {
+            addLast(id, judul, rating);
+        } else {
+            Film current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            Film newNode = new Film(current.prev, id, judul, rating, current);
+            current.prev.next = newNode;
+            current.prev = newNode;
+            size++;
+        }
+    }
+
+    public void removeFirst() throws Exception {
+        if (isEmpty()) {
+            throw new Exception("Daftar film kosong.");
+        } else {
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            } else {
+                tail = null;
+            }
+            size--;
+        }
+    }
+
+    public void removeLast() throws Exception {
+        if (isEmpty()) {
+            throw new Exception("Daftar film kosong.");
+        } else {
+            tail = tail.prev;
+            if (tail != null) {
+                tail.next = null;
+            } else {
+                head = null;
+            }
+            size--;
+        }
+    }
+
+    public void remove(int index) throws Exception {
+        if (index < 0 || index >= size) {
+            throw new Exception("Nilai indeks di luar batas");
+        }
+        if (index == 0) {
+            removeFirst();
+        } else if (index == size - 1) {
+            removeLast();
+        } else {
+            Film current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+            size--;
+        }
+    }
+
+    public Film searchById(int id) {
+        Film current = head;
+        while (current != null) {
+            if (current.id == id) {
+                return current;
+            }
+            current = current.next;
+        }
+        return null;
+    }
+
+    public void sortByRatingDesc() {
+        if (isEmpty() || size == 1) {
+            return;
+        }
+        boolean swapped;
+        do {
+            swapped = false;
+            Film current = head;
+            while (current.next != null) {
+                if (current.rating < current.next.rating) {
+                    // Swap data
+                    int tempId = current.id;
+                    String tempJudul = current.judul;
+                    double tempRating = current.rating;
+
+                    current.id = current.next.id;
+                    current.judul = current.next.judul;
+                    current.rating = current.next.rating;
+
+                    current.next.id = tempId;
+                    current.next.judul = tempJudul;
+                    current.next.rating = tempRating;
+
+                    swapped = true;
+                }
+                current = current.next;
+            }
+        } while (swapped);
+    }
+
+    public void printFilms() {
+        if (!isEmpty()) {
+            Film current = head;
+            while (current != null) {
+                System.out.println("ID: " + current.id + ", Judul: " + current.judul + ", Rating: " + current.rating);
+                current = current.next;
+            }
+        } else {
+            System.out.println("Daftar film kosong.");
+        }
+    }
+}
