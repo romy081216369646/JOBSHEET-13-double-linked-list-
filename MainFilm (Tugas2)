@@ -1,0 +1,113 @@
+import java.util.Scanner;
+
+public class MainFilm {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DoubleLinkedListFilm filmList = new DoubleLinkedListFilm();
+        int choice;
+        do {
+            System.out.println("DATA FILM LAYAR LEBAR");
+            System.out.println("1. Tambah Data Awal");
+            System.out.println("2. Tambah Data Akhir");
+            System.out.println("3. Tambah Data Index Tertentu");
+            System.out.println("4. Hapus Data Pertama");
+            System.out.println("5. Hapus Data Terakhir");
+            System.out.println("6. Hapus Data Tertentu");
+            System.out.println("7. Cetak");
+            System.out.println("8. Cari ID Film");
+            System.out.println("9. Urut Data Rating Film-DESC");
+            System.out.println("10. Keluar");
+            System.out.print("Pilih menu: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("ID Film: ");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Judul Film: ");
+                    String judul = scanner.nextLine();
+                    System.out.print("Rating Film: ");
+                    double rating = scanner.nextDouble();
+                    filmList.addFirst(id, judul, rating);
+                    break;
+                case 2:
+                    System.out.print("ID Film: ");
+                    id = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Judul Film: ");
+                    judul = scanner.nextLine();
+                    System.out.print("Rating Film: ");
+                    rating = scanner.nextDouble();
+                    filmList.addLast(id, judul, rating);
+                    break;
+                case 3:
+                    System.out.print("ID Film: ");
+                    id = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Judul Film: ");
+                    judul = scanner.nextLine();
+                    System.out.print("Rating Film: ");
+                    rating = scanner.nextDouble();
+                    System.out.print("Urutan ke-: ");
+                    int index = scanner.nextInt();
+                    try {
+                        filmList.add(id, judul, rating, index);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 4:
+                    try {
+                        filmList.removeFirst();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 5:
+                    try {
+                        filmList.removeLast();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 6:
+                    System.out.print("Masukkan indeks yang ingin dihapus: ");
+                    index = scanner.nextInt();
+                    try {
+                        filmList.remove(index);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 7:
+                    filmList.printFilms();
+                    break;
+                case 8:
+                    System.out.print("Masukkan ID Film yang dicari: ");
+                    id = scanner.nextInt();
+                    Film foundFilm = filmList.searchById(id);
+                    if (foundFilm != null) {
+                        System.out.println("ID Film: " + foundFilm.id);
+                        System.out.println("Judul Film: " + foundFilm.judul);
+                        System.out.println("IMDB Rating: " + foundFilm.rating);
+                    } else {
+                        System.out.println("Film dengan ID " + id + " tidak ditemukan.");
+                    }
+                    break;
+                case 9:
+                    filmList.sortByRatingDesc();
+                    System.out.println("Data telah diurutkan.");
+                    break;
+                case 10:
+                    System.out.println("Terima kasih!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+                    break;
+            }
+        } while (choice != 10);
+        scanner.close();
+    }
+}
