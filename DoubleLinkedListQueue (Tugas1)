@@ -1,0 +1,55 @@
+public class DoubleLinkedListQueue {
+    Node head, tail;
+    int size;
+
+    public DoubleLinkedListQueue() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void enqueue(int nomorAntrian, String nama) {
+        Node newNode = new Node(null, nomorAntrian, nama, null);
+        if (isEmpty()) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void dequeue() throws Exception {
+        if (isEmpty()) {
+            throw new Exception("Antrian masih kosong!");
+        } else {
+            System.out.println(head.nama + " telah selesai divaksinasi.");
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            } else {
+                tail = null;
+            }
+            size--;
+        }
+    }
+
+    public void printQueue() {
+        if (!isEmpty()) {
+            Node current = head;
+            System.out.println("Daftar Pengantri Vaksin:");
+            while (current != null) {
+                System.out.println("No. " + current.nomorAntrian + " Nama: " + current.nama);
+                current = current.next;
+            }
+            System.out.println("Sisa Antrian: " + size);
+        } else {
+            System.out.println("Antrian kosong.");
+        }
+    }
+}
