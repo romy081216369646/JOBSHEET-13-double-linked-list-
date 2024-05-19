@@ -1,0 +1,47 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DoubleLinkedListQueue queue = new DoubleLinkedListQueue();
+        int choice;
+        do {
+            System.out.println("PENGANTRI VAKSIN EXTRAVAGANZA");
+            System.out.println("1. Tambah Data Penerima Vaksin");
+            System.out.println("2. Hapus Data Pengantri Vaksin");
+            System.out.println("3. Daftar Penerima Vaksin");
+            System.out.println("4. Keluar");
+            System.out.print("Pilih menu: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Masukkan Nomor Antrian: ");
+                    int nomorAntrian = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Masukkan Nama Penerima: ");
+                    String nama = scanner.nextLine();
+                    queue.enqueue(nomorAntrian, nama);
+                    break;
+                case 2:
+                    try {
+                        queue.dequeue();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 3:
+                    queue.printQueue();
+                    break;
+                case 4:
+                    System.out.println("Terima kasih!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+                    break;
+            }
+        } while (choice != 4);
+        scanner.close();
+    }
+}
